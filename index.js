@@ -14,7 +14,7 @@ expressServer.get("/", function(req, res) {
   const token = req.query.token;
   if (!Expo.isExpoPushToken(token)) {
     console.log("Token invalide");
-    res.send({ err: "Token invalide" });
+    res.send({ error: "Token invalide" });
   } else {
     let messages = [
       {
@@ -27,11 +27,12 @@ expressServer.get("/", function(req, res) {
     expo
       .sendPushNotificationsAsync(messages)
       .then(ticket => {
+        console.log("Ticket recu: ", ticket);
         res.send({ ticket: ticket });
       })
       .catch(err => {
         console.log("Erreur d'envoi");
-        res.send({ err: "Erreur d'envoi" });
+        res.send({ error: err });
       });
   }
 });
